@@ -105,10 +105,16 @@ img { display: block; max-width: 100%; }
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+
+  filter: drop-shadow(0 0 12px rgba(0,0,0,.35));
 }
 
 .portfolio-text {
   color: var(--text);
+
+  text-shadow:
+    0 2px 10px rgba(0,0,0,.35),
+    0 0 20px rgba(0,0,0,.25);
 }
 
 .typing-text {
@@ -117,6 +123,9 @@ img { display: block; max-width: 100%; }
   min-height: 1.8em;
   font-weight: 300;
   letter-spacing: .01em;
+
+  text-shadow:
+    0 2px 8px rgba(0,0,0,.45);
 }
 
 /* cursor blink */
@@ -627,6 +636,7 @@ img { display: block; max-width: 100%; }
   font-size: .72rem;
   color: var(--muted);
   text-align: center;
+  background-color: papayawhip;
 }
 
 /* ── SKILLS ──────────────────────────────────────────────── */
@@ -856,12 +866,6 @@ img { display: block; max-width: 100%; }
   gap: 10px;
 }
 
-
-
-.blurred-in-modal {
-  filter: blur(1px);
-}
-
 .exp-images {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -889,7 +893,6 @@ img { display: block; max-width: 100%; }
   display: block;
   transition: transform .35s ease, filter .35s ease;
 }
-.exp-img.blurred { filter: blur(1px) brightness(.7); }
 .exp-img-overlay {
   position: absolute;
   inset: 0;
