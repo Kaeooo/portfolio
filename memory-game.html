@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Game</title>
+
+    <style>
+        body{
+            font-family: 'Consolas', monospace;
+            text-align:center;
+            background:#0d1117;
+            color:#58a6ff;
+            min-height:100vh;
+            margin:0;
+            padding:30px;
+        }
+
+        .game-board{
+            display:grid;
+            grid-template-columns:repeat(4, minmax(60px, 1fr));
+            gap:10px;
+            width:100%;
+            max-width:450px;
+            margin:auto;
+        }
+
+        button,
+        .back-btn{
+            background:#21262d;
+            color:#58a6ff;
+            border:1px solid #30363d;
+            padding:10px 20px;
+            border-radius:10px;
+            text-decoration:none;
+            cursor:pointer;
+            margin:10px;
+            transition:.3s;
+        }
+
+        button:hover,
+        .back-btn:hover{
+            background:#30363d;
+            box-shadow:0 0 15px rgba(88,166,255,.4);
+        }
+        h1{
+            font-size:40px;
+            margin-bottom:10px;
+            text-shadow:0 0 15px rgba(88,166,255,.5);
+        }
+        .card.matched{
+            background:#238636;
+            border-color:#2ea043;
+            color:white;
+        }
+        #restartBtn{
+            background:#4CAF50;
+            color:white;
+        }
+
+        .back-btn{
+            background:#2196F3;
+            color:white;
+        }
+        .container{
+            max-width:600px;
+            margin:auto;
+            position:relative;
+            z-index:1;
+            background:#161b22;
+            padding:30px;
+            border-radius:20px;
+            box-shadow:0 0 30px rgba(88,166,255,.2);
+        }
+        .card{
+            aspect-ratio:1/1;
+            width:100%;
+            background:#21262d;
+            border:2px solid #30363d;
+            color:#58a6ff;
+            font-size:40px;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            cursor:pointer;
+            border-radius:12px;
+            transition:.3s;
+        }
+
+        .card:hover{
+            transform:translateY(-5px);
+            border-color:#58a6ff;
+            box-shadow:0 0 15px rgba(88,166,255,.5);
+        }
+        .card.matched{
+            background:#238636;
+            border-color:#2ea043;
+            color:white;
+        }
+        @media (max-width: 768px){
+
+            .game-board{
+                gap:8px;
+            }
+
+            .card{
+                font-size:28px;
+            }
+
+            h1{
+                font-size:28px;
+            }
+
+        }
+        .floating-bg{
+            position:fixed;
+            inset:0;
+            overflow:hidden;
+            pointer-events:none;
+            z-index:0;
+        }
+
+        .floating-bg span{
+            position:absolute;
+            font-size:30px;
+            opacity:.15;
+            animation: float 15s linear infinite;
+        }
+
+        .floating-bg span:nth-child(1){
+            left:10%;
+            animation-duration:18s;
+        }
+
+        .floating-bg span:nth-child(2){
+            left:25%;
+            animation-duration:12s;
+        }
+
+        .floating-bg span:nth-child(3){
+            left:40%;
+            animation-duration:20s;
+        }
+
+        .floating-bg span:nth-child(4){
+            left:55%;
+            animation-duration:15s;
+        }
+
+        .floating-bg span:nth-child(5){
+            left:70%;
+            animation-duration:22s;
+        }
+
+        .floating-bg span:nth-child(6){
+            left:80%;
+            animation-duration:16s;
+        }
+
+        .floating-bg span:nth-child(7){
+            left:90%;
+            animation-duration:14s;
+        }
+
+        .floating-bg span:nth-child(8){
+            left:5%;
+            animation-duration:19s;
+        }
+
+        @keyframes float{
+            from{
+                transform:translateY(110vh) rotate(0deg);
+            }
+            to{
+                transform:translateY(-20vh) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-bg">
+        <span>💻</span>
+        <span>⚡</span>
+        <span>🚀</span>
+        <span>🎮</span>
+        <span>🐱</span>
+        <span>👨‍💻</span>
+        <span>🖥️</span>
+        <span>☕</span>
+    </div>
+
+    <div class="container">
+        <h1>🎮 Memory Game</h1>
+
+        <div class="game-board" id="gameBoard"></div>
+
+        <button id="restartBtn">🔄 Restart</button>
+        <a href="index.html" class="back-btn">
+        ⬅ Back
+    </a>
+    </div>
+    <script>
+        const gameBoard = document.getElementById('gameBoard');
+
+        const emojis = [
+            '🐱','🐶','🐰','🦁',
+            '🐱','🐶','🐰','🦁'
+        ];
+
+        // สุ่มตำแหน่ง
+        emojis.sort(() => Math.random() - 0.5);
+
+        // สร้างการ์ด
+        emojis.forEach(emoji => {
+
+            const card = document.createElement('div');
+
+            card.classList.add('card');
+
+            card.dataset.value = emoji;
+
+            card.textContent = '?';
+
+            gameBoard.appendChild(card);
+
+        });
+
+        const cards = document.querySelectorAll('.card');
+
+        let firstCard = null;
+        let secondCard = null;
+
+        let matchedPairs = 0;
+        let lockBoard = false;
+
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+
+                if(lockBoard) return;
+
+                if(card === firstCard) return;
+
+                card.textContent = card.dataset.value;
+
+                if(!firstCard){
+                    firstCard = card;
+                    return;
+                }
+
+                secondCard = card;
+
+                if(firstCard.dataset.value === secondCard.dataset.value){
+
+                    matchedPairs++;
+
+                    if(matchedPairs === 4){
+                        alert('🎉 Congratulations! You Win!');
+                    }
+
+
+                    firstCard = null;
+                    secondCard = null;
+
+                }else{
+
+            lockBoard = true;
+
+            setTimeout(() => {
+
+                firstCard.textContent = '?';
+                secondCard.textContent = '?';
+
+                firstCard = null;
+                secondCard = null;
+
+                lockBoard = false;
+
+            },1000);
+
+        }
+
+            });
+        });
+
+        document.getElementById('restartBtn')
+        .addEventListener('click', () => {
+            location.reload();
+        });
+    </script>
+</body>
+</html>

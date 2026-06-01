@@ -41,7 +41,21 @@ function initWelcome() {
   const ws = document.getElementById('welcome-screen');
   if (!ws) return;
 
-  type(); // start typing
+  const introPlayed = sessionStorage.getItem('introPlayed');
+
+  if (introPlayed) {
+
+    ws.classList.add('hide');
+
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+
+    return;
+  }
+
+  sessionStorage.setItem('introPlayed', 'true');
+
+  type();
 
   setTimeout(() => {
     ws.classList.add('hide');
@@ -49,7 +63,6 @@ function initWelcome() {
     document.documentElement.style.overflow = '';
   }, 3200);
 
-  // failsafe: force release after 4s
   setTimeout(() => {
     document.body.style.overflow = '';
     document.documentElement.style.overflow = '';
