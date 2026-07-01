@@ -1,577 +1,430 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Portfolio</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-    <script src="script.js" defer></script>
+  <script src="script.js" defer></script>
 </head>
+
 <body>
-    <!-- Welcome Screen -->
-    <div id="welcome-screen">
-    <!-- วางใส่ใน #welcome-screen ก่อน .welcome-content -->
-<canvas id="particle-canvas"></canvas>
+  <div id="welcome-screen">
+    <canvas id="particle-canvas"></canvas>
 
-<style>
-#particle-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ให้ welcome-content อยู่บน canvas */
-.welcome-content {
-  position: relative;
-  z-index: 1;
-}
-</style>
-
-<script>
-(function () {
-  const canvas = document.getElementById('particle-canvas');
-  const ctx = canvas.getContext('2d');
-
-  const keywords = [
-    'ER Diagram', 'DFD', 'SQL', 'UML', '</>', 'USE CASE',
-    'PostgreSQL', 'Requirement', 'C#', '.NET', 'Git',
-    '{ }', 'System Design', 'TypeScript', 'Data Flow',
-    'Process', 'Entity', 'Attribute', 'SELECT *', 'JOIN',
-  ];
-
-  let W, H, particles;
-
-  function resize() {
-    W = canvas.width  = canvas.offsetWidth;
-    H = canvas.height = canvas.offsetHeight;
-  }
-
-  function rand(min, max) { return Math.random() * (max - min) + min; }
-
-  function createParticle(isText) {
-    const text  = keywords[Math.floor(Math.random() * keywords.length)];
-    const size  = isText ? rand(11, 15) : rand(4, 10);
-    return {
-      isText,
-      text,
-      x:      rand(0, W),
-      y:      rand(0, H),
-      vx:     rand(-0.25, 0.25),
-      vy:     rand(-0.35, -0.1),
-      alpha:  rand(0.35, 0.65),
-      size,
-      shape:  ['circle','square','diamond'][Math.floor(Math.random()*3)],
-      color:  ['#a78bfa','#60a5fa','#38bdf8','#c4b5fd','#93c5fd'][Math.floor(Math.random()*5)],
-    };
-  }
-
-  function initParticles() {
-    particles = [];
-    const total = Math.floor((W * H) / 18000);
-    for (let i = 0; i < total; i++) {
-      particles.push(createParticle(i % 2 === 0));
-    }
-  }
-
-  function drawShape(p) {
-    ctx.save();
-    ctx.globalAlpha = p.alpha;
-    ctx.fillStyle   = p.color;
-    ctx.strokeStyle = p.color;
-    ctx.lineWidth   = 1;
-    ctx.translate(p.x, p.y);
-
-    if (p.isText) {
-      ctx.font = `${p.size}px monospace`;
-      ctx.fillText(p.text, 0, 0);
-    } else {
-      const s = p.size;
-      if (p.shape === 'circle') {
-        ctx.beginPath();
-        ctx.arc(0, 0, s, 0, Math.PI * 2);
-        ctx.stroke();
-      } else if (p.shape === 'square') {
-        ctx.strokeRect(-s, -s, s * 2, s * 2);
-      } else {
-        ctx.beginPath();
-        ctx.moveTo(0, -s);
-        ctx.lineTo(s, 0);
-        ctx.lineTo(0, s);
-        ctx.lineTo(-s, 0);
-        ctx.closePath();
-        ctx.stroke();
+    <style>
+      #particle-canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
       }
-    }
-    ctx.restore();
-  }
 
-  function tick() {
-    ctx.clearRect(0, 0, W, H);
+      /* ให้ welcome-content อยู่บน canvas */
+      .welcome-content {
+        position: relative;
+        z-index: 1;
+      }
+    </style>
 
-    for (const p of particles) {
-      p.x += p.vx;
-      p.y += p.vy;
+    <script>
+      (function () {
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
 
-      if (p.y < -20)  p.y = H + 20;
-      if (p.x < -80)  p.x = W + 80;
-      if (p.x > W+80) p.x = -80;
+        const keywords = [
+          'ER Diagram', 'DFD', 'SQL', 'UML', '</>', 'USE CASE',
+          'PostgreSQL', 'Requirement', 'C#', '.NET', 'Git',
+          '{ }', 'System Design', 'TypeScript', 'Data Flow',
+          'Process', 'Entity', 'Attribute', 'SELECT *', 'JOIN',
+        ];
 
-      drawShape(p);
-    }
+        let W, H, particles;
 
-    requestAnimationFrame(tick);
-  }
+        function resize() {
+          W = canvas.width = canvas.offsetWidth;
+          H = canvas.height = canvas.offsetHeight;
+        }
 
-  window.addEventListener('resize', () => { resize(); initParticles(); });
-  resize();
-  initParticles();
-  tick();
-})();
-</script>
+        function rand(min, max) { return Math.random() * (max - min) + min; }
+
+        function createParticle(isText) {
+          const text = keywords[Math.floor(Math.random() * keywords.length)];
+          const size = isText ? rand(11, 15) : rand(4, 10);
+          return {
+            isText,
+            text,
+            x: rand(0, W),
+            y: rand(0, H),
+            vx: rand(-0.25, 0.25),
+            vy: rand(-0.35, -0.1),
+            alpha: rand(0.35, 0.65),
+            size,
+            shape: ['circle', 'square', 'diamond'][Math.floor(Math.random() * 3)],
+            color: ['#a78bfa', '#60a5fa', '#38bdf8', '#c4b5fd', '#93c5fd'][Math.floor(Math.random() * 5)],
+          };
+        }
+
+        function initParticles() {
+          particles = [];
+          const total = Math.floor((W * H) / 18000);
+          for (let i = 0; i < total; i++) {
+            particles.push(createParticle(i % 2 === 0));
+          }
+        }
+
+        function drawShape(p) {
+          ctx.save();
+          ctx.globalAlpha = p.alpha;
+          ctx.fillStyle = p.color;
+          ctx.strokeStyle = p.color;
+          ctx.lineWidth = 1;
+          ctx.translate(p.x, p.y);
+
+          if (p.isText) {
+            ctx.font = `${p.size}px monospace`;
+            ctx.fillText(p.text, 0, 0);
+          } else {
+            const s = p.size;
+            if (p.shape === 'circle') {
+              ctx.beginPath();
+              ctx.arc(0, 0, s, 0, Math.PI * 2);
+              ctx.stroke();
+            } else if (p.shape === 'square') {
+              ctx.strokeRect(-s, -s, s * 2, s * 2);
+            } else {
+              ctx.beginPath();
+              ctx.moveTo(0, -s);
+              ctx.lineTo(s, 0);
+              ctx.lineTo(0, s);
+              ctx.lineTo(-s, 0);
+              ctx.closePath();
+              ctx.stroke();
+            }
+          }
+          ctx.restore();
+        }
+
+        function tick() {
+          ctx.clearRect(0, 0, W, H);
+
+          for (const p of particles) {
+            p.x += p.vx;
+            p.y += p.vy;
+
+            if (p.y < -20) p.y = H + 20;
+            if (p.x < -80) p.x = W + 80;
+            if (p.x > W + 80) p.x = -80;
+
+            drawShape(p);
+          }
+
+          requestAnimationFrame(tick);
+        }
+
+        window.addEventListener('resize', () => { resize(); initParticles(); });
+        resize();
+        initParticles();
+        tick();
+      })();
+    </script>
     <div class="welcome-content">
 
-        <h1>
-        ✨ 
-            <span class="gradient-text">Welcome to</span>
-            <span class="portfolio-text">My Portfolio</span>
-        </h1>
+      <h1>
+        ✨
+        <span class="gradient-text">Welcome to</span>
+        <span class="portfolio-text">My Portfolio</span>
+      </h1>
 
-        <p class="typing-text"></p>
+      <p class="typing-text"></p>
 
     </div>
-    </div>
+  </div>
 
-    <div class="top-profile" id="profileBtn">
+  <div class="top-profile" id="profileBtn">
 
-        <img
-            src="images/profile.png"
-            alt=""
-        >
+    <img src="images/profile.png" alt="">
 
-        <div class="profile-popup" id="profilePopup">
+    <div class="profile-popup" id="profilePopup">
 
-            <img src="images/profile.png">
+      <img src="images/profile.png">
 
-            <h3>Kaeota Matyalan</h3>
+      <h3>Kaeota Matyalan</h3>
 
-            <p class="role">Solving Problems Through Technology</p>
+      <p class="role">Solving Problems Through Technology</p>
 
-            <div class="profile-info">
+      <div class="profile-info">
 
-                <p>🎂 28 Sep 2003</p>
+        <p>🎂 28 Sep 2003</p>
 
-                <p>📍 Thailand</p>
-<!-- update -->
-                <p>🕌 Islam</p>
+        <p>📍 Thailand</p>
+        <p>🕌 Islam</p>
 
-                <a href="memory-game.html" class="game-btn">
-                🎮 Play My Game
-                </a>
+        <a href="memory-game.html" class="game-btn">
+          🎮 Play My Game
+        </a>
 
-            </div>
-
-        </div>
+      </div>
 
     </div>
 
-  <!-- แสงเบลอ -->
+  </div>
+
   <div class="blur1"></div>
   <div class="blur2"></div>
 
   <div class="container">
-
     <div class="profile-box">
       <h1>Hi, I'm Kaeota 👋</h1>
 
-      <p>
-        A recent Computer Science graduate with skills in software analysis and development gained from an internship as a Software Developer. I am ready to learn and further develop my skills through real work experience, to fully support the team’s tasks and grow together with the organization as an IT professional.
+      <p>A recent Computer Science graduate with skills in software analysis and development gained from an internship
+        as a Software Developer. I am ready to learn and further develop my skills through real work experience, to
+        fully support the team’s tasks and grow together with the organization as an IT professional.
     </div>
 
-        <!-- ===== MENU GRID ===== -->
-<div class="menu-grid">
-
-  <div class="card card-about" onclick="toggleSection('about')">
-    <div class="card-top">
-      <span class="card-num">01</span>
-      <span class="emoji">🙋‍♂️</span>
-    </div>
-    <div class="card-body">
-      <h2>About Me</h2>
-      <p>ข้อมูลส่วนตัวและประวัติการศึกษา</p>
-    </div>
-    <div class="card-footer">
-      <span class="card-cta">ดูข้อมูล</span>
-      <svg class="card-chevron" width="18" height="18" viewBox="0 0 24 24"
-     fill="none" stroke="currentColor" stroke-width="2.5"
-     stroke-linecap="round" stroke-linejoin="round">
-  <path d="M12 5v14M5 12l7 7 7-7"/>
-</svg>
-    </div>
-  </div>
-
-  <div class="card card-projects" onclick="toggleSection('projects')">
-    <div class="card-top">
-      <span class="card-num">02</span>
-      <span class="emoji">💻</span>
-    </div>
-    <div class="card-body">
-      <h2>Projects</h2>
-      <p>รวมผลงานและโปรเจกต์ที่พัฒนา</p>
-    </div>
-    <div class="card-footer">
-      <span class="card-cta">ดูผลงาน</span>
-      <svg class="card-chevron" width="18" height="18" viewBox="0 0 24 24"
-     fill="none" stroke="currentColor" stroke-width="2.5"
-     stroke-linecap="round" stroke-linejoin="round">
-  <path d="M12 5v14M5 12l7 7 7-7"/>
-</svg>
-    </div>
-  </div>
-
-  <div class="card card-skills" onclick="toggleSection('skills')">
-    <div class="card-top">
-      <span class="card-num">03</span>
-      <span class="emoji">⚡</span>
-    </div>
-    <div class="card-body">
-      <h2>Skills</h2>
-      <p>ทักษะและเครื่องมือที่ใช้งาน</p>
-    </div>
-    <div class="card-footer">
-      <span class="card-cta">ดู Skills</span>
-      <svg class="card-chevron" width="18" height="18" viewBox="0 0 24 24"
-     fill="none" stroke="currentColor" stroke-width="2.5"
-     stroke-linecap="round" stroke-linejoin="round">
-  <path d="M12 5v14M5 12l7 7 7-7"/>
-</svg>
-    </div>
-  </div>
-
-  <div class="card card-experience" onclick="toggleSection('experience')">
-    <div class="card-top">
-      <span class="card-num">04</span>
-      <span class="emoji">🚀</span>
-    </div>
-    <div class="card-body">
-      <h2>Experience</h2>
-      <p>ประสบการณ์และการฝึกงาน</p>
-    </div>
-    <div class="card-footer">
-      <span class="card-cta">ดูประสบการณ์</span>
-      <svg class="card-chevron" width="18" height="18" viewBox="0 0 24 24"
-     fill="none" stroke="currentColor" stroke-width="2.5"
-     stroke-linecap="round" stroke-linejoin="round">
-  <path d="M12 5v14M5 12l7 7 7-7"/>
-</svg>
-    </div>
-  </div>
-
-</div>
-
-<!-- ===== SCROLL INDICATOR ===== -->
-<div class="scroll-indicator">
-  <span class="scroll-label">Select a section to view details</span>
-  <div class="scroll-arrow">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 5v14M5 12l7 7 7-7"/>
-    </svg>
-  </div>
-</div>
-
-
-
-        <section id="about" class="content-section hidden-section">
-        <div class="about-wrapper">
-
-            <!-- Header: Avatar + Name -->
-            <div class="about-header">
-            <div class="avatar">
-                <img src="images/profile.png" class="popup-image" alt="Profile">
-            </div>
-            <div>
-                <h1 class="about-name">kaeota Matyalan</h1>
-                <p class="about-subtitle">Looking for Opportunities</p>
-            </div>
-            </div>
-
-            <!-- Info Cards Grid -->
-            <div class="info-grid">
-
-            <div class="info-card">
-                <p class="card-label">Address</p>
-                <div class="card-row">
-                <span class="card-icon">📍</span>
-                <span class="card-value">54/1 Moo.5, Bueng San Sub-district, Ongkharak District,
-        Nakhon Nayok Province, 26120
-        </span>
-                </div>
-            </div>
-
-            <div class="info-card">
-                <p class="card-label">University</p>
-                <div class="card-row">
-                <span class="card-icon">🏫</span>
-                <span class="card-value">Rajamangala University of Technology Thanyaburi</span>
-                </div>
-            </div>
-
-            <div class="info-card">
-                <p class="card-label">Major</p>
-                <div class="card-row">
-                <span class="card-icon">📘</span>
-                <span class="card-value">Computer Science</span>
-                </div>
-            </div>
-
-            <div class="info-card gpa-card">
-                <p class="card-label">GPA</p>
-                <span class="gpa-number">3.85</span>
-            </div>
-
-            </div>
-
-            <!-- About Paragraph -->
-            <div class="info-card">
-            <p class="card-label">About Me</p>
-            <p class="about-bio">
-                <span>
-                    Computer Science graduate passionate about
-                    software development, system analysis, and web application design.
-                </span><br>
-                <span>
-                    Developed a halal location search web application
-                    as a senior project using ASP.NET Web Forms, VB.NET, and SQL Server,
-                    including database design, admin management systems,
-                    email notifications, and user review features.
-                </span><br>
-                <span>
-                    Internship experience in enterprise web application development
-                    using Angular, .NET Core, Clean Architecture, and C#,
-                    with PostgreSQL database management through DBeaver.
-                </span>
-
-            </p>
-            </div>
-
-            <!-- Contact -->
-                    <!-- Contact -->
-            <div class="info-card">
-            <div class="lbl" style="margin-bottom:14px">
-                <i class="ti ti-address-book" aria-hidden="true"></i> Contact
-            </div>
-            <div class="contact-grid">
-                <a class="contact-item" href="mailto:kaeota.2809@email.com">
-                <i class="ti ti-mail" aria-hidden="true"></i>
-                <div class="ci-info">
-                    <p>Email</p>
-                    <span>kaeota.2809@email.com</span>
-                </div>
-                </a>
-                <a class="contact-item" href="tel:0652157285">
-                <i class="ti ti-phone" aria-hidden="true"></i>
-                <div class="ci-info">
-                    <p>Phone</p>
-                    <span>065-215-7285</span>
-                </div>
-                </a>
-                <a class="contact-item" href="https://github.com/Kaeooo" target="_blank">
-                <i class="ti ti-brand-github" aria-hidden="true"></i>
-                <div class="ci-info">
-                    <p>GitHub</p>
-                    <span>github.com/Kaeooo</span>
-                </div>
-                </a>
-                <div class="contact-item">
-                <i class="ti ti-brand-line" aria-hidden="true"></i>
-                <div class="ci-info">
-                    <p>LINE</p>
-                    <span>suroivia_kt</span> <!-- แก้ LINE ID ตรงนี้ -->
-                </div>
-                </div>
-            </div>
-            </div>
-
+    <div class="menu-grid">
+      <div class="card card-about" onclick="toggleSection('about')">
+        <div class="card-top">
+          <span class="card-num">01</span>
+          <span class="emoji">🙋‍♂️</span>
         </div>
-        </section>
-
-        
-
-        <section id="projects" class="content-section hidden-section">
-  <h1>💻 Project Preview</h1>
-
-  <div class="proj-wrapper">
-
-    <!-- Senior Project Card -->
-    <div class="proj-card">
-
-        <!-- Header -->
-        <div class="proj-header">
-          <div class="proj-icon">🎓</div>
-          <div class="proj-title-group">
-            <h2 class="proj-title">Senior Project</h2>
-            <p class="proj-subtitle">Halal Finder — ระบบค้นหาร้านอาหารฮาลาลและสถานที่สำหรับชาวมุสลิมในอำเภอคลองหลวง จังหวัดปทุมธานี</p>
-          </div>
-          <span class="proj-badge">2026</span>
+        <div class="card-body">
+          <h2>About Me</h2>
+          <p>ข้อมูลส่วนตัวและประวัติการศึกษา</p>
         </div>
-
-        <div class="proj-divider"></div>
-
-        <!-- Tech Tags -->
-        <div class="proj-tags">
-        <span class="proj-tag tag-web">Web Application</span>
-        <span class="proj-tag tag-db">Database Design</span>
-        <span class="proj-tag tag-sa">System Analysis</span>
+        <div class="card-footer">
+          <span class="card-cta">ดูข้อมูล</span>
+          <svg class="card-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14M5 12l7 7 7-7" />
+          </svg>
+        </div>
       </div>
 
-        <!-- Description -->
-        <p class="proj-desc">
-          ระบบค้นหาร้านอาหารฮาลาลและสถานที่สำหรับชาวมุสลิมในอำเภอคลองหลวง จังหวัดปทุมธานี
-              โดยระบบรองรับการค้นหาตามประเภทสถานที่
-              แสดงข้อมูลรายละเอียด รีวิวจากผู้ใช้งาน และตำแหน่งที่ตั้งผ่าน Google Maps
-        </p><br>
-        <p class="proj-desc">
-
-              ผู้ใช้งานสามารถส่งคำขอเพิ่มสถานที่เข้าสู่ระบบ
-              เพื่อให้ผู้ดูแลตรวจสอบ อนุมัติ หรือปฏิเสธข้อมูลได้
-              พร้อมระบบแจ้งเตือนผ่านอีเมลเมื่อมีการส่งคำขอ
-              รวมถึงแจ้งผลการอนุมัติหรือปฏิเสธกลับไปยังผู้ใช้งาน
-        </p><br>
-        <style>
-    .highlight-role {
-        border-left: 4px solid #4A90E2;
-        background: #091f5059;
-        padding: 14px 18px;
-        margin-top: 12px;
-        border-radius: 6px;
-        font-size: 15px;
-        line-height: 1.6;
-    }
-  </style>
-        <p class="highlight-role">
-          รับผิดชอบการวิเคราะห์และออกแบบระบบ (System Analysis & Design)<br>
-          ออกแบบฐานข้อมูล (Database Design)<br>
-          จัดทำ ER Diagram (ERD) และ Data Flow Diagram (DFD)<br>
-          พัฒนาฟังก์ชันและหน้าจอสำหรับผู้ดูแลระบบทั้งหมด (Admin Panel Development)<br>
-          พัฒนาส่วนหน้าบ้าน (Frontend) หลายส่วนของระบบ รวมถึงการปรับปรุง UI/UX ให้เหมาะสมกับผู้ใช้งาน (Frontend Development & UI/UX Improvement)<br>
-          ดูแลและปรับแก้ไขบั๊กระหว่างการพัฒนาและทดสอบระบบ (Debugging & System Testing)<br>
-      </p><br>
-        <p class="proj-desc">
-              พัฒนา Web Application ด้วย ASP.NET Web Forms, HTML, CSS, JavaScript และ SQL Server
-              ทั้งในส่วน Frontend และ Backend
-              พร้อมออกแบบ UI/UX เพื่อให้ระบบใช้งานง่ายและรองรับการขยายในอนาคต
-        </p>
-
-        <div class="proj-divider"></div>
-
-        <!-- Diagrams Section -->
-        <p class="proj-section-label">📐 System Design</p>
-        <div class="proj-gallery" id="gallery-design">
-          <div class="proj-img-wrap">
-            <img src="images/er.png" alt="ER Diagram" class="proj-img popup-image" />
-            <div class="proj-img-caption">ER Diagram</div>
-          </div>
-          <div class="proj-img-wrap">
-            <img src="images/dfd.jpg" alt="DFD" class="proj-img popup-image" />
-            <div class="proj-img-caption">DFD</div>
-          </div>
-          <div class="proj-img-wrap">
-            <img src="images/dfd0.png" alt="DFD" class="proj-img popup-image" />
-            <div class="proj-img-caption">DFD </div>
-          </div>
-          <div class="proj-img-wrap">
-            <img src="images/dfd1.jpg" alt="DFD" class="proj-img popup-image" />
-            <div class="proj-img-caption">DFD </div>
-          </div>
-          <div class="proj-img-wrap">
-            <img src="images/dfd2.jpg" alt="DFD" class="proj-img popup-image" />
-            <div class="proj-img-caption">DFD </div>
-          </div>
-          <div class="proj-img-wrap">
-            <img src="images/dfd3.jpg" alt="DFD" class="proj-img popup-image" />
-            <div class="proj-img-caption">DFD </div>
-          </div>
+      <div class="card card-projects" onclick="toggleSection('projects')">
+        <div class="card-top">
+          <span class="card-num">02</span>
+          <span class="emoji">💻</span>
         </div>
-
-        <!-- Screenshots Section -->
-        <p class="proj-section-label" style="margin-top: 24px;">🖥️ Website Preview</p>
-        <div class="proj-gallery" id="gallery-screens">
-          <div class="proj-img-wrap">
-            <img src="images/screen4.png" alt="Screenshot 1" class="proj-img popup-image" />
-            <div class="proj-img-caption"> Login Page</div>
-          </div>
-          <div class="proj-img-wrap">
-            <img src="images/screen5.png" alt="Screenshot 2" class="proj-img popup-image" />
-            <div class="proj-img-caption">Register Page</div>
-          </div>
-          <div class="proj-img-wrap">
-            <img src="images/screen14.png" alt="Screenshot 2" class="proj-img popup-image" />
-            <div class="proj-img-caption">Forgot Password Page</div>
-          </div>
-          <div class="proj-img-wrap">
-            <img src="images/screen13.png" alt="Screenshot 2" class="proj-img popup-image" />
-            <div class="proj-img-caption">Support Page</div>
-          </div>
-          <div class="proj-img-wrap">
-            <img src="images/screen1.png" alt="Screenshot 3" class="proj-img popup-image" />
-            <div class="proj-img-caption">Home Page</div>
-          </div>
-          <div class="proj-img-wrap">
-            <img src="images/screen11.png" alt="Screenshot 3" class="proj-img popup-image" />
-            <div class="proj-img-caption">Home Page</div>
-          </div>
-          <div class="proj-img-wrap">
-            <img src="images/screen12.png" alt="Screenshot 3" class="proj-img popup-image" />
-            <div class="proj-img-caption">Home Page</div>
-          </div>
-          <div class="proj-img-wrap">
-            <img src="images/screen2.png" alt="Screenshot 4" class="proj-img popup-image" />
-            <div class="proj-img-caption">Listing Page</div>
-          </div>
-          <div class="proj-img-wrap">
-            <img src="images/screen3.png" alt="Screenshot 5" class="proj-img popup-image" />
-            <div class="proj-img-caption">Detail Page</div>
-          </div>
-          <div class="proj-img-wrap">
-            <img src="images/screen6.png" alt="Screenshot 6" class="proj-img popup-image" />
-            <div class="proj-img-caption">Add Location Request Page</div>
-          </div>
-          <div class="proj-img-wrap">
-            <img src="images/screen8.png" alt="Screenshot 7" class="proj-img popup-image" />
-            <div class="proj-img-caption">Reviews</div>
-          </div>
-          <div class="proj-img-wrap">
-            <img src="images/screen9.png" alt="Screenshot 8" class="proj-img popup-image" />
-            <div class="proj-img-caption">Admin Page</div>
-          </div>
+        <div class="card-body">
+          <h2>Projects</h2>
+          <p>รวมผลงานและโปรเจกต์ที่พัฒนา</p>
         </div>
-
-    </div>
-
-    <div class="proj-card">
-      <!-- Header -->
-        <div class="proj-header">
-          <div class="proj-icon">🧩</div>
-          <div class="proj-title-group">
-            <h2 class="proj-title">Remind Me Project</h2>
-            <p class="proj-subtitle">แอปพลิเคชันสำหรับจัดการงานและติดตามความคืบหน้าของแต่ละกิจกรรม</p>
-          </div>
-          <span class="proj-badge">2023</span>
+        <div class="card-footer">
+          <span class="card-cta">ดูผลงาน</span>
+          <svg class="card-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14M5 12l7 7 7-7" />
+          </svg>
         </div>
-
-        <div class="proj-divider"></div>
-        <!-- Tech Tags -->
-        <div class="proj-tags">
-        <span class="proj-tag tag-web">Web Application</span>
-        <span class="proj-tag tag-sa">System Analysis</span>
       </div>
 
-        <!-- Description -->
-        <style>
-          .highlight-role {
+      <div class="card card-skills" onclick="toggleSection('skills')">
+        <div class="card-top">
+          <span class="card-num">03</span>
+          <span class="emoji">⚡</span>
+        </div>
+        <div class="card-body">
+          <h2>Skills</h2>
+          <p>ทักษะและเครื่องมือที่ใช้งาน</p>
+        </div>
+        <div class="card-footer">
+          <span class="card-cta">ดู Skills</span>
+          <svg class="card-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14M5 12l7 7 7-7" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="card card-experience" onclick="toggleSection('experience')">
+        <div class="card-top">
+          <span class="card-num">04</span>
+          <span class="emoji">🚀</span>
+        </div>
+        <div class="card-body">
+          <h2>Experience</h2>
+          <p>ประสบการณ์และการฝึกงาน</p>
+        </div>
+        <div class="card-footer">
+          <span class="card-cta">ดูประสบการณ์</span>
+          <svg class="card-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14M5 12l7 7 7-7" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SCROLL INDICATOR ===== -->
+    <div class="scroll-indicator">
+      <span class="scroll-label">Select a section to view details</span>
+      <div class="scroll-arrow">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 5v14M5 12l7 7 7-7" />
+        </svg>
+      </div>
+    </div>
+
+    <section id="about" class="content-section hidden-section">
+      <div class="about-wrapper">
+        <div class="about-header">
+          <div class="avatar">
+            <img src="images/profile.png" class="popup-image" alt="Profile">
+          </div>
+
+          <div>
+            <h1 class="about-name">kaeota Matyalan</h1>
+            <p class="about-subtitle">Looking for Opportunities</p>
+          </div>
+        </div>
+
+        <!-- Info Cards Grid -->
+        <div class="info-grid">
+
+          <div class="info-card">
+            <p class="card-label">Address</p>
+            <div class="card-row">
+              <span class="card-icon">📍</span>
+              <span class="card-value">54/1 Moo.5, Bueng San Sub-district, Ongkharak District,
+                Nakhon Nayok Province, 26120
+              </span>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <p class="card-label">University</p>
+            <div class="card-row">
+              <span class="card-icon">🏫</span>
+              <span class="card-value">Rajamangala University of Technology Thanyaburi</span>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <p class="card-label">Major</p>
+            <div class="card-row">
+              <span class="card-icon">📘</span>
+              <span class="card-value">Computer Science</span>
+            </div>
+          </div>
+
+          <div class="info-card gpa-card">
+            <p class="card-label">GPA</p>
+            <span class="gpa-number">3.85</span>
+          </div>
+
+        </div>
+
+        <!-- About Paragraph -->
+        <div class="info-card">
+          <p class="card-label">About Me</p>
+          <p class="about-bio">
+            <span>
+              Computer Science graduate passionate about
+              software development, system analysis, and web application design.
+            </span><br>
+            <span>
+              Developed a halal location search web application
+              as a senior project using ASP.NET Web Forms, VB.NET, and SQL Server,
+              including database design, admin management systems,
+              email notifications, and user review features.
+            </span><br>
+            <span>
+              Internship experience in enterprise web application development
+              using Angular, .NET Core, Clean Architecture, and C#,
+              with PostgreSQL database management through DBeaver.
+            </span>
+
+          </p>
+        </div>
+
+        <!-- Contact -->
+        <div class="info-card">
+          <div class="lbl" style="margin-bottom:14px">
+            <i class="ti ti-address-book" aria-hidden="true"></i> Contact
+          </div>
+          <div class="contact-grid">
+            <a class="contact-item" href="mailto:kaeota.2809@email.com">
+              <i class="ti ti-mail" aria-hidden="true"></i>
+              <div class="ci-info">
+                <p>Email</p>
+                <span>kaeota.2809@email.com</span>
+              </div>
+            </a>
+            <a class="contact-item" href="tel:0652157285">
+              <i class="ti ti-phone" aria-hidden="true"></i>
+              <div class="ci-info">
+                <p>Phone</p>
+                <span>065-215-7285</span>
+              </div>
+            </a>
+            <a class="contact-item" href="https://github.com/Kaeooo" target="_blank">
+              <i class="ti ti-brand-github" aria-hidden="true"></i>
+              <div class="ci-info">
+                <p>GitHub</p>
+                <span>github.com/Kaeooo</span>
+              </div>
+            </a>
+            <div class="contact-item">
+              <i class="ti ti-brand-line" aria-hidden="true"></i>
+              <div class="ci-info">
+                <p>LINE</p>
+                <span>suroivia_kt</span> <!-- แก้ LINE ID ตรงนี้ -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="projects" class="content-section hidden-section">
+      <h1>💻 Project Preview</h1>
+      <div class="proj-wrapper">
+
+        <!-- Senior Project Card -->
+        <div class="proj-card">
+
+          <!-- Header -->
+          <div class="proj-header">
+            <div class="proj-icon">🎓</div>
+            <div class="proj-title-group">
+              <h2 class="proj-title">Senior Project</h2>
+              <p class="proj-subtitle">Halal Finder — ระบบค้นหาร้านอาหารฮาลาลและสถานที่สำหรับชาวมุสลิมในอำเภอคลองหลวง
+                จังหวัดปทุมธานี</p>
+            </div>
+            <span class="proj-badge">2026</span>
+          </div>
+
+          <div class="proj-divider"></div>
+
+          <!-- Tech Tags -->
+          <div class="proj-tags">
+            <span class="proj-tag tag-web">Web Application</span>
+            <span class="proj-tag tag-db">Database Design</span>
+            <span class="proj-tag tag-sa">System Analysis</span>
+          </div>
+
+          <!-- Description -->
+          <p class="proj-desc">
+            ระบบค้นหาร้านอาหารฮาลาลและสถานที่สำหรับชาวมุสลิมในอำเภอคลองหลวง จังหวัดปทุมธานี
+            โดยระบบรองรับการค้นหาตามประเภทสถานที่
+            แสดงข้อมูลรายละเอียด รีวิวจากผู้ใช้งาน และตำแหน่งที่ตั้งผ่าน Google Maps
+          </p><br>
+          <p class="proj-desc">
+
+            ผู้ใช้งานสามารถส่งคำขอเพิ่มสถานที่เข้าสู่ระบบ
+            เพื่อให้ผู้ดูแลตรวจสอบ อนุมัติ หรือปฏิเสธข้อมูลได้
+            พร้อมระบบแจ้งเตือนผ่านอีเมลเมื่อมีการส่งคำขอ
+            รวมถึงแจ้งผลการอนุมัติหรือปฏิเสธกลับไปยังผู้ใช้งาน
+          </p><br>
+          <style>
+            .highlight-role {
               border-left: 4px solid #4A90E2;
               background: #091f5059;
               padding: 14px 18px;
@@ -579,296 +432,421 @@
               border-radius: 6px;
               font-size: 15px;
               line-height: 1.6;
-          }
-        </style>
-        <p class="highlight-role">
-         แอปพลิเคชันสำหรับจัดการงานและติดตามความคืบหน้าของแต่ละกิจกรรม ตั้งแต่งานที่ต้องทำ งานที่กำลังดำเนินการ ไปจนถึงงานที่เสร็จสมบูรณ์<br>
-        ฉันรับผิดชอบทั้งด้าน UX/UI Design (Figma) & System Analysis <br>
-        โปรเจกต์นี้มุ่งช่วยให้นักศึกษาวางแผนและบริหารจัดการเวลาการทำงานได้อย่างเป็นระบบมากขึ้น
-      </p>
-      <br>
-        <p class="proj-desc">
-  รับผิดชอบการเก็บรวบรวมและวิเคราะห์ความต้องการจากผู้ใช้งาน (นักศึกษา)  
-  วางโครงสร้างระบบ ออกแบบกระบวนการทำงาน และออกแบบ UI/UX พร้อมจัดทำ Prototype  
-  เพื่อถ่ายทอดภาพรวมของแอปพลิเคชันอย่างครบถ้วนสำหรับการนำไปพัฒนาต่อในอนาคต
-</p>
+            }
+          </style>
+          <p class="highlight-role">
+            รับผิดชอบการวิเคราะห์และออกแบบระบบ (System Analysis & Design)<br>
+            ออกแบบฐานข้อมูล (Database Design)<br>
+            จัดทำ ER Diagram (ERD) และ Data Flow Diagram (DFD)<br>
+            พัฒนาฟังก์ชันและหน้าจอสำหรับผู้ดูแลระบบทั้งหมด (Admin Panel Development)<br>
+            พัฒนาส่วนหน้าบ้าน (Frontend) หลายส่วนของระบบ รวมถึงการปรับปรุง UI/UX ให้เหมาะสมกับผู้ใช้งาน (Frontend
+            Development & UI/UX Improvement)<br>
+            ดูแลและปรับแก้ไขบั๊กระหว่างการพัฒนาและทดสอบระบบ (Debugging & System Testing)<br>
+          </p><br>
+          <p class="proj-desc">
+            พัฒนา Web Application ด้วย ASP.NET Web Forms, HTML, CSS, JavaScript และ SQL Server
+            ทั้งในส่วน Frontend และ Backend
+            พร้อมออกแบบ UI/UX เพื่อให้ระบบใช้งานง่ายและรองรับการขยายในอนาคต
+          </p>
 
-        <div class="proj-divider"></div>
-        <!-- Screenshots Section -->
-        <p class="proj-section-label" style="margin-top: 24px;">🖥️ Preview</p>
-        <div class="proj-gallery" id="gallery-screens">
-          <div class="proj-img-wrap">
-            <img src="images/rm1.png" alt="Screenshot 1" class="proj-img popup-image" />
-            <div class="proj-img-caption">Page</div>
-          </div>
-          <div class="proj-img-wrap">
-            <img src="images/rm2.png" alt="Screenshot 2" class="proj-img popup-image" />
-            <div class="proj-img-caption">Page</div>
-          </div>
-          <div class="proj-img-wrap">
-            <img src="images/rm3.png" alt="Screenshot 2" class="proj-img popup-image" />
-            <div class="proj-img-caption">Page</div>
-          </div>
-          <div class="proj-img-wrap">
-            <img src="images/rm4.png" alt="Screenshot 2" class="proj-img popup-image" />
-            <div class="proj-img-caption">Page</div>
-          </div>
+          <div class="proj-divider"></div>
 
-    </div>
-
-  </div>
-        </section>
-
-        
-        <section id="skills" class="content-section hidden-section">
-            <h1>⚡ Skills</h1>
-
-            <div class="skills-wrapper">
-              <div class="skill-group skill-desc-card">
-                  <p class="proj-section-label">📐 Soft Skills</p>
-                    <!-- Tech Tags -->
-                    <div class="proj-tags">
-                    <span class="proj-tag tag-web">Teamwork</span>
-                    <span class="proj-tag tag-db">Analytical Thinking</span>
-                    <span class="proj-tag tag-sa">Active Participation</span>
-                  </div>
-
-                    <div class="gallery" id="gallery-design">
-                      <div class="proj-img-wrap">
-                        <img src="images/sk1.jpg" alt="ER Diagram" class="proj-img popup-image" />
-                        <div class="proj-img-caption">Teamwork</div>
-                      </div>
-                      <div class="proj-img-wrap">
-                        <img src="images/sk2.jpg" alt="DFD" class="proj-img popup-image" />
-                        <div class="proj-img-caption">Analytical Thinking</div>
-                      </div>
-                      <div class="proj-img-wrap">
-                        <img src="images/sk3.jpg" alt="DFD" class="proj-img popup-image" />
-                        <div class="proj-img-caption">Active Participation</div>
-                      </div>
-                    </div>  
-                </div>
-                <!-- คำบรรยาย -->
-                <div class="skill-group skill-desc-card">
-                <p class="skill-group-label">📝 Description</p>
-                  <ul class="skill-desc-list">
-
-                      <li>Fundamental programming skills (C#, HTML, CSS, JavaScript, TypeScript)</li>
-
-                      <li>System analysis and design based on user requirements</li>
-
-                      <li>Creating system documentation including ER Diagram (ERD) and Data Flow Diagram (DFD)</li>
-
-                      <li>System analysis and design, and database management (PostgreSQL, SQL Server)</li>
-
-                      <li>Web application development using ASP.NET Web Forms</li>
-
-                      <li>Responsive web design and UI/UX development</li>
-
-                      <li>LINE notification system and Flex Message design implementation</li>
-
-                      <li>Email notification system implementation</li>
-
-                      <li>REST API and third-party service integration</li>
-
-                      <li>CRUD operations and admin management systems</li>
-
-                      <li>Version control and collaboration using Git and GitHub</li>
-
-                      <li>System testing, debugging, and performance optimization</li>
-
-                      <li>Strong problem-solving, teamwork, and communication skills</li>
-
-                  </ul>
-                </div>
-
-                <!-- ภาษาโปรแกรม -->
-                <div class="skill-group">
-                <p class="skill-group-label">🖥️ Programming Languages</p>
-                <div class="skill-tags">
-                    <span class="skill-tag tag-purple">HTML</span>
-                    <span class="skill-tag tag-purple">CSS</span>
-                    <span class="skill-tag tag-purple">TypeScript</span>
-                    <span class="skill-tag tag-purple">JavaScript</span>
-                    <span class="skill-tag tag-purple">C#</span>
-                    <span class="skill-tag tag-purple">Java</span>
-                    <span class="skill-tag tag-purple">Python</span>
-
-
-                </div>
-                </div>
-
-                <!-- Framework -->
-                <div class="skill-group">
-                <p class="skill-group-label">⚙️ Framework & Library</p>
-                <div class="skill-tags">
-                    <span class="skill-tag tag-blue">Angular</span>
-                    <span class="skill-tag tag-blue">ASP.NET Web Forms</span>
-                    <span class="skill-tag tag-blue">.NET</span>
-                </div>
-                </div>
-
-                <!-- Database -->
-                <div class="skill-group">
-                <p class="skill-group-label">🗄️ Database</p>
-                <div class="skill-tags">
-                    <span class="skill-tag tag-green">MySQL</span>
-                    <span class="skill-tag tag-green">PostgreSQL</span>
-                </div>
-                </div>
-
-                <!-- Tools -->
-                <div class="skill-group">
-                <p class="skill-group-label">🛠️ Tools & DevOps</p>
-                <div class="skill-tags">
-                    <span class="skill-tag tag-orange">Git</span>
-                    <span class="skill-tag tag-orange">Git Desktop</span>
-                    <span class="skill-tag tag-orange">VS Code</span>
-                    <span class="skill-tag tag-orange">Visual Studio</span>
-                    <span class="skill-tag tag-orange">DBeaver</span>
-                    <span class="skill-tag tag-orange">Postman</span>
-                    <span class="skill-tag tag-orange">Draw.io</span>
-                    <span class="skill-tag tag-orange">Power BI</span>
-                    <span class="skill-tag tag-orange">Figma</span>
-                    <span class="skill-tag tag-orange">MS Office</span>
-                    <span class="skill-tag tag-orange">chatGPT</span>
-
-                </div>
-                </div>
-
+          <!-- Diagrams Section -->
+          <p class="proj-section-label">📐 System Design</p>
+          <div class="proj-gallery" id="gallery-design">
+            <div class="proj-img-wrap">
+              <img src="images/er.png" alt="ER Diagram" class="proj-img popup-image" />
+              <div class="proj-img-caption">ER Diagram</div>
             </div>
-            </section>
-
-            
-
-        <section id="experience" class="content-section hidden-section">
-        <h1>🚀 Experience</h1>
-
-        <div class="exp-wrapper">
-
-            <div class="exp-card">
-
-            <!-- Header -->
-            <div class="exp-header">
-                <div class="exp-icon">💼</div>
-                <div class="exp-title-group">
-                <h2 class="exp-position">Software Developer Intern</h2>
-                <p class="exp-company">EXALER Company Limited </p>
-                </div>
-                <div class="exp-date">
-                <span class="exp-badge">May 2025 – Oct 2025</span>
-                </div>
+            <div class="proj-img-wrap">
+              <img src="images/dfd.jpg" alt="DFD" class="proj-img popup-image" />
+              <div class="proj-img-caption">DFD</div>
             </div>
-
-            <div class="exp-divider"></div>
-
-            <!-- Tags -->
-            <div class="exp-tags">
-              <span class="exp-tag tag-dotnet">.NET</span>
-              <span class="exp-tag tag-cs">C#</span>
-              <span class="exp-tag tag-pg">PostgreSQL</span>
-              <span class="exp-tag tag-git">Git</span>
-              <span class="exp-tag tag-html">HTML/CSS</span>
-              <span class="exp-tag tag-angular">Angular</span>
-              <span class="exp-tag tag-ts">TypeScript</span>
+            <div class="proj-img-wrap">
+              <img src="images/dfd0.png" alt="DFD" class="proj-img popup-image" />
+              <div class="proj-img-caption">DFD </div>
+            </div>
+            <div class="proj-img-wrap">
+              <img src="images/dfd1.jpg" alt="DFD" class="proj-img popup-image" />
+              <div class="proj-img-caption">DFD </div>
+            </div>
+            <div class="proj-img-wrap">
+              <img src="images/dfd2.jpg" alt="DFD" class="proj-img popup-image" />
+              <div class="proj-img-caption">DFD </div>
+            </div>
+            <div class="proj-img-wrap">
+              <img src="images/dfd3.jpg" alt="DFD" class="proj-img popup-image" />
+              <div class="proj-img-caption">DFD </div>
+            </div>
           </div>
 
-            <!-- Bullet Points -->
-            <ul class="exp-list">
-                <li>Participated in system analysis by reviewing existing workflows and identifying areas for improvement</li>
-                <li>Communicated with end users and team leads to clarify requirements before implementation</li>
-                <li>Documented feature logic and system behavior to support team understanding and future maintenance</li>
-                <li>Gathered requirements from team leads and translated them into system designs and technical specifications</li>
-                <li>Analyzed and extended existing enterprise web applications, including email notifications, customer issue reporting, and LINE alert integrations</li>
-                <li>Designed database schemas and identified necessary changes to support new features</li>
-                <li>Developed and enhanced corporate web applications using .NET and C#</li>
-                <li>Designed and implemented systems with PostgreSQL database integration</li>
-                <li>Collaborated with the development team and managed code versions using Git</li>
-                <li>Analyzed requirements and developed features to support real user needs</li>
-            </ul>
-        <div class="exp-divider" style="margin-top: 24px;"></div>
-        
-            <!-- Work Samples -->
-            <p class="exp-samples-title">🖼️ Work Samples</p>
-        
-              <!-- Project 1 -->
-              <div class="exp-project">
-                  <div class="exp-project-header">
-                  <span class="exp-project-name">Project 1 — ระบบแจ้งเตือน LINE</span>
-                  <span class="exp-project-note">* ภาพถูก blur เพื่อปกป้องข้อมูลองค์กร</span>
-                  </div>
-                  <p class="exp-project-desc">
-                  ปรับปรุงและพัฒนาระบบแจ้งเตือนการลางานผ่าน LINE โดยออกแบบรูปแบบการแจ้งเตือนและ Flex Message ใหม่ พร้อมแก้ไขปัญหาการเชื่อมต่อหน้า Detail 
-                  จากลิงก์เดิม และปรับปรุงระบบยื่นลาและการแจ้งเตือนอัตโนมัติให้ทำงานร่วมกับระบบเดิมได้อย่างมีประสิทธิภาพมากขึ้น
-
-
-                  </p>
-                  <div class="exp-images">
-                  <div class="exp-img-wrap">
-                      <img src="images/2a.png" alt="Project 1 - Image 1" class="exp-img blurred popup-image always-blurred" />
-                      <div class="exp-img-overlay">Hover to preview</div>
-                  </div>
-                  <div class="exp-img-wrap">
-                      <img src="images/2b.png" alt="Project 1 - Image 2" class="exp-img blurred popup-image always-blurred" />
-                      <div class="exp-img-overlay">Hover to preview</div>
-                  </div>
-                  </div>
-              </div>
-        
-              <!-- Project 2 -->
-              <div class="exp-project">
-                  <div class="exp-project-header">
-                    <span class="exp-project-name">Project 2 — ระบบแจ้งปัญหาสำหรับลูกค้า</span>
-                    <span class="exp-project-note">* ภาพถูก blur เพื่อปกป้องข้อมูลองค์กร</span>
-                  </div>
-                  <p class="exp-project-desc">
-                ได้รับมอบหมายให้ออกแบบหน้า Portal และจัดทำ HTML Template สำหรับระบบแจ้งเตือนและตอบกลับอัตโนมัติ เพื่อรองรับการติดตามสถานะการดำเนินงานและปรับปรุงประสบการณ์การใช้งานของผู้ใช้
-                  </p>
-                  <div class="exp-images">
-                    <div class="exp-img-wrap">
-                        <img src="images/1a.png" alt="Project 2 - Image 1" class="exp-img blurred popup-image always-blurred" />
-                        <div class="exp-img-overlay">Hover to preview</div>
-                    </div>
-                    <div class="exp-img-wrap">
-                        <img src="images/1b.png" alt="Project 2 - Image 2" class="exp-img blurred popup-image always-blurred" />
-                        <div class="exp-img-overlay">Hover to preview</div>
-                    </div>
-                  </div>
-              </div>
+          <!-- Screenshots Section -->
+          <p class="proj-section-label" style="margin-top: 24px;">🖥️ Website Preview</p>
+          <div class="proj-gallery" id="gallery-screens">
+            <div class="proj-img-wrap">
+              <img src="images/screen4.png" alt="Screenshot 1" class="proj-img popup-image" />
+              <div class="proj-img-caption"> Login Page</div>
             </div>
-
-            <!-- Project 3 -->
-            <div class="exp-project">
-                <div class="exp-project-header">
-                  <span class="exp-project-name">Project 3 — ระบบจัดการธุรกรรม Coin</span>
-                  <span class="exp-project-note">* ภาพถูก blur เพื่อปกป้องข้อมูลองค์กร</span>
-                </div>
-                <p class="exp-project-desc">
-               พัฒนาและออกแบบฟังก์ชันภายในองค์กร รวมถึงระบบจัดการ Coin การโอนและติดตามธุรกรรม พร้อมออกแบบโครงสร้างฐานข้อมูล และพัฒนาการเชื่อมต่อระหว่าง Frontend, Backend และระบบจัดการข้อมูลภายในองค์กร
-                </p>
-                <div class="exp-images">
-                  <div class="exp-img-wrap">
-                      <img src="images/ex1.png" alt="Project 3 - Image 1" class="exp-img blurred popup-image always-blurred" />
-                      <div class="exp-img-overlay">Hover to preview</div>
-                  </div>
-                  <div class="exp-img-wrap">
-                      <img src="images/ex2.png" alt="Project 3 - Image 2" class="exp-img blurred popup-image always-blurred" />
-                      <div class="exp-img-overlay">Hover to preview</div>
-                  </div>
-                </div>
+            <div class="proj-img-wrap">
+              <img src="images/screen5.png" alt="Screenshot 2" class="proj-img popup-image" />
+              <div class="proj-img-caption">Register Page</div>
             </div>
-        
+            <div class="proj-img-wrap">
+              <img src="images/screen14.png" alt="Screenshot 2" class="proj-img popup-image" />
+              <div class="proj-img-caption">Forgot Password Page</div>
+            </div>
+            <div class="proj-img-wrap">
+              <img src="images/screen13.png" alt="Screenshot 2" class="proj-img popup-image" />
+              <div class="proj-img-caption">Support Page</div>
+            </div>
+            <div class="proj-img-wrap">
+              <img src="images/screen1.png" alt="Screenshot 3" class="proj-img popup-image" />
+              <div class="proj-img-caption">Home Page</div>
+            </div>
+            <div class="proj-img-wrap">
+              <img src="images/screen11.png" alt="Screenshot 3" class="proj-img popup-image" />
+              <div class="proj-img-caption">Home Page</div>
+            </div>
+            <div class="proj-img-wrap">
+              <img src="images/screen12.png" alt="Screenshot 3" class="proj-img popup-image" />
+              <div class="proj-img-caption">Home Page</div>
+            </div>
+            <div class="proj-img-wrap">
+              <img src="images/screen2.png" alt="Screenshot 4" class="proj-img popup-image" />
+              <div class="proj-img-caption">Listing Page</div>
+            </div>
+            <div class="proj-img-wrap">
+              <img src="images/screen3.png" alt="Screenshot 5" class="proj-img popup-image" />
+              <div class="proj-img-caption">Detail Page</div>
+            </div>
+            <div class="proj-img-wrap">
+              <img src="images/screen6.png" alt="Screenshot 6" class="proj-img popup-image" />
+              <div class="proj-img-caption">Add Location Request Page</div>
+            </div>
+            <div class="proj-img-wrap">
+              <img src="images/screen8.png" alt="Screenshot 7" class="proj-img popup-image" />
+              <div class="proj-img-caption">Reviews</div>
+            </div>
+            <div class="proj-img-wrap">
+              <img src="images/screen9.png" alt="Screenshot 8" class="proj-img popup-image" />
+              <div class="proj-img-caption">Admin Page</div>
+            </div>
+          </div>
+
         </div>
-        </section>
-        
+
+        <div class="proj-card">
+          <!-- Header -->
+          <div class="proj-header">
+            <div class="proj-icon">🧩</div>
+            <div class="proj-title-group">
+              <h2 class="proj-title">Remind Me Project</h2>
+              <p class="proj-subtitle">แอปพลิเคชันสำหรับจัดการงานและติดตามความคืบหน้าของแต่ละกิจกรรม</p>
+            </div>
+            <span class="proj-badge">2023</span>
+          </div>
+
+          <div class="proj-divider"></div>
+          <!-- Tech Tags -->
+          <div class="proj-tags">
+            <span class="proj-tag tag-web">Web Application</span>
+            <span class="proj-tag tag-sa">System Analysis</span>
+          </div>
+
+          <style>
+            .highlight-role {
+              border-left: 4px solid #4A90E2;
+              background: #091f5059;
+              padding: 14px 18px;
+              margin-top: 12px;
+              border-radius: 6px;
+              font-size: 15px;
+              line-height: 1.6;
+            }
+          </style>
+          <p class="highlight-role">
+            แอปพลิเคชันสำหรับจัดการงานและติดตามความคืบหน้าของแต่ละกิจกรรม ตั้งแต่งานที่ต้องทำ งานที่กำลังดำเนินการ
+            ไปจนถึงงานที่เสร็จสมบูรณ์<br>
+            ฉันรับผิดชอบทั้งด้าน UX/UI Design (Figma) & System Analysis <br>
+            โปรเจกต์นี้มุ่งช่วยให้นักศึกษาวางแผนและบริหารจัดการเวลาการทำงานได้อย่างเป็นระบบมากขึ้น
+          </p>
+          <br>
+          <p class="proj-desc">
+            รับผิดชอบการเก็บรวบรวมและวิเคราะห์ความต้องการจากผู้ใช้งาน (นักศึกษา)
+            วางโครงสร้างระบบ ออกแบบกระบวนการทำงาน และออกแบบ UI/UX พร้อมจัดทำ Prototype
+            เพื่อถ่ายทอดภาพรวมของแอปพลิเคชันอย่างครบถ้วนสำหรับการนำไปพัฒนาต่อในอนาคต
+          </p>
+
+          <div class="proj-divider"></div>
+          <!-- Screenshots Section -->
+          <p class="proj-section-label" style="margin-top: 24px;">🖥️ Preview</p>
+          <div class="proj-gallery" id="gallery-screens">
+            <div class="proj-img-wrap">
+              <img src="images/rm1.png" alt="Screenshot 1" class="proj-img popup-image" />
+              <div class="proj-img-caption">Page</div>
+            </div>
+            <div class="proj-img-wrap">
+              <img src="images/rm2.png" alt="Screenshot 2" class="proj-img popup-image" />
+              <div class="proj-img-caption">Page</div>
+            </div>
+            <div class="proj-img-wrap">
+              <img src="images/rm3.png" alt="Screenshot 2" class="proj-img popup-image" />
+              <div class="proj-img-caption">Page</div>
+            </div>
+            <div class="proj-img-wrap">
+              <img src="images/rm4.png" alt="Screenshot 2" class="proj-img popup-image" />
+              <div class="proj-img-caption">Page</div>
+            </div>
+
+          </div>
+
+        </div>
+    </section>
+
+    <section id="skills" class="content-section hidden-section">
+      <h1>⚡ Skills</h1>
+      <div class="skills-wrapper">
+        <div class="skill-group skill-desc-card">
+          <p class="proj-section-label">📐 Soft Skills</p>
+          <!-- Tech Tags -->
+          <div class="proj-tags">
+            <span class="proj-tag tag-web">Teamwork</span>
+            <span class="proj-tag tag-db">Analytical Thinking</span>
+            <span class="proj-tag tag-sa">Active Participation</span>
+          </div>
+
+          <div class="gallery" id="gallery-design">
+            <div class="proj-img-wrap">
+              <img src="images/sk1.jpg" alt="ER Diagram" class="proj-img popup-image" />
+              <div class="proj-img-caption">Teamwork</div>
+            </div>
+            <div class="proj-img-wrap">
+              <img src="images/sk2.jpg" alt="DFD" class="proj-img popup-image" />
+              <div class="proj-img-caption">Analytical Thinking</div>
+            </div>
+            <div class="proj-img-wrap">
+              <img src="images/sk3.jpg" alt="DFD" class="proj-img popup-image" />
+              <div class="proj-img-caption">Active Participation</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- คำบรรยาย -->
+        <div class="skill-group skill-desc-card">
+          <p class="skill-group-label">📝 Description</p>
+          <ul class="skill-desc-list">
+
+            <li>Fundamental programming skills (C#, HTML, CSS, JavaScript, TypeScript)</li>
+
+            <li>System analysis and design based on user requirements</li>
+
+            <li>Creating system documentation including ER Diagram (ERD) and Data Flow Diagram (DFD)</li>
+
+            <li>System analysis and design, and database management (PostgreSQL, SQL Server)</li>
+
+            <li>Web application development using ASP.NET Web Forms</li>
+
+            <li>Responsive web design and UI/UX development</li>
+
+            <li>LINE notification system and Flex Message design implementation</li>
+
+            <li>Email notification system implementation</li>
+
+            <li>REST API and third-party service integration</li>
+
+            <li>CRUD operations and admin management systems</li>
+
+            <li>Version control and collaboration using Git and GitHub</li>
+
+            <li>System testing, debugging, and performance optimization</li>
+
+            <li>Strong problem-solving, teamwork, and communication skills</li>
+
+          </ul>
+        </div>
+
+        <!-- ภาษาโปรแกรม -->
+        <div class="skill-group">
+          <p class="skill-group-label">🖥️ Programming Languages</p>
+          <div class="skill-tags">
+            <span class="skill-tag tag-purple">HTML</span>
+            <span class="skill-tag tag-purple">CSS</span>
+            <span class="skill-tag tag-purple">TypeScript</span>
+            <span class="skill-tag tag-purple">JavaScript</span>
+            <span class="skill-tag tag-purple">C#</span>
+            <span class="skill-tag tag-purple">Java</span>
+            <span class="skill-tag tag-purple">Python</span>
+          </div>
+        </div>
+
+        <!-- Framework -->
+        <div class="skill-group">
+          <p class="skill-group-label">⚙️ Framework & Library</p>
+          <div class="skill-tags">
+            <span class="skill-tag tag-blue">Angular</span>
+            <span class="skill-tag tag-blue">ASP.NET Web Forms</span>
+            <span class="skill-tag tag-blue">.NET</span>
+          </div>
+        </div>
+
+        <!-- Database -->
+        <div class="skill-group">
+          <p class="skill-group-label">🗄️ Database</p>
+          <div class="skill-tags">
+            <span class="skill-tag tag-green">MySQL</span>
+            <span class="skill-tag tag-green">PostgreSQL</span>
+          </div>
+        </div>
+
+        <!-- Tools -->
+        <div class="skill-group">
+          <p class="skill-group-label">🛠️ Tools & DevOps</p>
+          <div class="skill-tags">
+            <span class="skill-tag tag-orange">Git</span>
+            <span class="skill-tag tag-orange">Git Desktop</span>
+            <span class="skill-tag tag-orange">VS Code</span>
+            <span class="skill-tag tag-orange">Visual Studio</span>
+            <span class="skill-tag tag-orange">DBeaver</span>
+            <span class="skill-tag tag-orange">Postman</span>
+            <span class="skill-tag tag-orange">Draw.io</span>
+            <span class="skill-tag tag-orange">Power BI</span>
+            <span class="skill-tag tag-orange">Figma</span>
+            <span class="skill-tag tag-orange">MS Office</span>
+            <span class="skill-tag tag-orange">chatGPT</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience" class="content-section hidden-section">
+      <h1>🚀 Experience</h1>
+      <div class="exp-wrapper">
+        <div class="exp-card">
+          <!-- Header -->
+          <div class="exp-header">
+            <div class="exp-icon">💼</div>
+            <div class="exp-title-group">
+              <h2 class="exp-position">Software Developer Intern</h2>
+              <p class="exp-company">EXALER Company Limited </p>
+            </div>
+            <div class="exp-date">
+              <span class="exp-badge">May 2025 – Oct 2025</span>
+            </div>
+          </div>
+
+          <div class="exp-divider"></div>
+
+          <!-- Tags -->
+          <div class="exp-tags">
+            <span class="exp-tag tag-dotnet">.NET</span>
+            <span class="exp-tag tag-cs">C#</span>
+            <span class="exp-tag tag-pg">PostgreSQL</span>
+            <span class="exp-tag tag-git">Git</span>
+            <span class="exp-tag tag-html">HTML/CSS</span>
+            <span class="exp-tag tag-angular">Angular</span>
+            <span class="exp-tag tag-ts">TypeScript</span>
+          </div>
+
+          <!-- Bullet Points -->
+          <ul class="exp-list">
+            <li>Participated in system analysis by reviewing existing workflows and identifying areas for improvement
+            </li>
+            <li>Communicated with end users and team leads to clarify requirements before implementation</li>
+            <li>Documented feature logic and system behavior to support team understanding and future maintenance</li>
+            <li>Gathered requirements from team leads and translated them into system designs and technical
+              specifications
+            </li>
+            <li>Analyzed and extended existing enterprise web applications, including email notifications, customer
+              issue
+              reporting, and LINE alert integrations</li>
+            <li>Designed database schemas and identified necessary changes to support new features</li>
+            <li>Developed and enhanced corporate web applications using .NET and C#</li>
+            <li>Designed and implemented systems with PostgreSQL database integration</li>
+            <li>Collaborated with the development team and managed code versions using Git</li>
+            <li>Analyzed requirements and developed features to support real user needs</li>
+          </ul>
+          <div class="exp-divider" style="margin-top: 24px;"></div>
+
+          <!-- Work Samples -->
+          <p class="exp-samples-title">🖼️ Work Samples</p>
+
+          <!-- Project 1 -->
+          <div class="exp-project">
+            <div class="exp-project-header">
+              <span class="exp-project-name">Project 1 — ระบบแจ้งเตือน LINE</span>
+              <span class="exp-project-note">* ภาพถูก blur เพื่อปกป้องข้อมูลองค์กร</span>
+            </div>
+            <p class="exp-project-desc">
+              ปรับปรุงและพัฒนาระบบแจ้งเตือนการลางานผ่าน LINE โดยออกแบบรูปแบบการแจ้งเตือนและ Flex Message ใหม่
+              พร้อมแก้ไขปัญหาการเชื่อมต่อหน้า Detail
+              จากลิงก์เดิม
+              และปรับปรุงระบบยื่นลาและการแจ้งเตือนอัตโนมัติให้ทำงานร่วมกับระบบเดิมได้อย่างมีประสิทธิภาพมากขึ้น
+            </p>
+            <div class="exp-images">
+              <div class="exp-img-wrap">
+                <img src="images/2a.png" alt="Project 1 - Image 1" class="exp-img blurred popup-image always-blurred" />
+                <div class="exp-img-overlay">Hover to preview</div>
+              </div>
+              <div class="exp-img-wrap">
+                <img src="images/2b.png" alt="Project 1 - Image 2" class="exp-img blurred popup-image always-blurred" />
+                <div class="exp-img-overlay">Hover to preview</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 2 -->
+          <div class="exp-project">
+            <div class="exp-project-header">
+              <span class="exp-project-name">Project 2 — ระบบแจ้งปัญหาสำหรับลูกค้า</span>
+              <span class="exp-project-note">* ภาพถูก blur เพื่อปกป้องข้อมูลองค์กร</span>
+            </div>
+            <p class="exp-project-desc">
+              ได้รับมอบหมายให้ออกแบบหน้า Portal และจัดทำ HTML Template สำหรับระบบแจ้งเตือนและตอบกลับอัตโนมัติ
+              เพื่อรองรับการติดตามสถานะการดำเนินงานและปรับปรุงประสบการณ์การใช้งานของผู้ใช้
+            </p>
+            <div class="exp-images">
+              <div class="exp-img-wrap">
+                <img src="images/1a.png" alt="Project 2 - Image 1" class="exp-img blurred popup-image always-blurred" />
+                <div class="exp-img-overlay">Hover to preview</div>
+              </div>
+              <div class="exp-img-wrap">
+                <img src="images/1b.png" alt="Project 2 - Image 2" class="exp-img blurred popup-image always-blurred" />
+                <div class="exp-img-overlay">Hover to preview</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="exp-project">
+          <div class="exp-project-header">
+            <span class="exp-project-name">Project 3 — ระบบจัดการธุรกรรม Coin</span>
+            <span class="exp-project-note">* ภาพถูก blur เพื่อปกป้องข้อมูลองค์กร</span>
+          </div>
+          <p class="exp-project-desc">
+            พัฒนาและออกแบบฟังก์ชันภายในองค์กร รวมถึงระบบจัดการ Coin การโอนและติดตามธุรกรรม พร้อมออกแบบโครงสร้างฐานข้อมูล
+            และพัฒนาการเชื่อมต่อระหว่าง Frontend, Backend และระบบจัดการข้อมูลภายในองค์กร
+          </p>
+          <div class="exp-images">
+            <div class="exp-img-wrap">
+              <img src="images/ex1.png" alt="Project 3 - Image 1" class="exp-img blurred popup-image always-blurred" />
+              <div class="exp-img-overlay">Hover to preview</div>
+            </div>
+            <div class="exp-img-wrap">
+              <img src="images/ex2.png" alt="Project 3 - Image 2" class="exp-img blurred popup-image always-blurred" />
+              <div class="exp-img-overlay">Hover to preview</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
-<!-- Image Popup -->
-<div id="imgModal" class="img-modal">
 
+  <!-- Image Popup -->
+  <div id="imgModal" class="img-modal">
     <span class="close-btn">&times;</span>
-
     <img class="modal-content" id="popupImg">
-
-</div>
+  </div>
 </body>
+
 </html>

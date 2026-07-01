@@ -1,8 +1,4 @@
-/* ============================================================
-   PORTFOLIO SCRIPT — Kaeota Matyalan
-   ============================================================ */
-
-/* ── TYPING EFFECT ───────────────────────────────────────── */
+/* TYPING EFFECT */
 const phrases = [
   'Computer Science Graduate',
   'Software Developer',
@@ -10,7 +6,20 @@ const phrases = [
   'Problem Solver',
 ];
 
-let pi = 0, ci = 0, deleting = false;
+let pi = 0;
+let ci = 0;
+let deleting = false;
+
+/* SCROLL CONTROL */
+function lockScroll() {
+  document.body.style.overflow = 'hidden';
+  document.documentElement.style.overflow = 'hidden';
+}
+
+function unlockScroll() {
+  document.body.style.overflow = '';
+  document.documentElement.style.overflow = '';
+}
 
 function type() {
   const el = document.querySelector('.typing-text');
@@ -20,6 +29,7 @@ function type() {
 
   if (!deleting) {
     el.textContent = current.slice(0, ++ci);
+
     if (ci === current.length) {
       deleting = true;
       setTimeout(type, 1600);
@@ -27,6 +37,7 @@ function type() {
     }
   } else {
     el.textContent = current.slice(0, --ci);
+
     if (ci === 0) {
       deleting = false;
       pi = (pi + 1) % phrases.length;
@@ -36,7 +47,7 @@ function type() {
   setTimeout(type, deleting ? 45 : 80);
 }
 
-/* ── WELCOME SCREEN ──────────────────────────────────────── */
+/*  WELCOME SCREEN */
 function initWelcome() {
   const ws = document.getElementById('welcome-screen');
   if (!ws) return;
@@ -44,12 +55,8 @@ function initWelcome() {
   const introPlayed = sessionStorage.getItem('introPlayed');
 
   if (introPlayed) {
-
     ws.classList.add('hide');
-
-    document.body.style.overflow = '';
-    document.documentElement.style.overflow = '';
-
+    unlockScroll();
     return;
   }
 
@@ -59,42 +66,42 @@ function initWelcome() {
 
   setTimeout(() => {
     ws.classList.add('hide');
-    document.body.style.overflow = '';
-    document.documentElement.style.overflow = '';
+    unlockScroll();
   }, 3200);
-
-  setTimeout(() => {
-    document.body.style.overflow = '';
-    document.documentElement.style.overflow = '';
-  }, 4000);
 }
 
-/* ── SECTION TOGGLE ──────────────────────────────────────── */
+/* SECTION TOGGLE */
 function toggleSection(id) {
   const sec = document.getElementById(id);
   if (!sec) return;
 
   const isHidden = sec.classList.contains('hidden-section');
 
-  // close all
-  document.querySelectorAll('.content-section').forEach(s => {
-    s.classList.add('hidden-section');
+  // Close all sections
+  document.querySelectorAll('.content-section').forEach(section => {
+    section.classList.add('hidden-section');
   });
 
   if (isHidden) {
     sec.classList.remove('hidden-section');
+
     setTimeout(() => {
-      sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      sec.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
     }, 60);
   } else {
-    // was open → just closed → scroll back to top (menu area)
-    document.querySelector('.menu-grid')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelector('.menu-grid')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
   }
 }
 
-/* ── IMAGE MODAL ─────────────────────────────────────────── */
+/*  IMAGE MODAL */
 function initModal() {
-  const modal   = document.getElementById('imgModal');
+  const modal = document.getElementById('imgModal');
   const popupImg = document.getElementById('popupImg');
   const closeBtn = document.querySelector('.close-btn');
 
@@ -102,51 +109,60 @@ function initModal() {
 
   document.addEventListener('click', e => {
     const trigger = e.target.closest('.popup-image');
+
     if (trigger && trigger.tagName === 'IMG') {
       popupImg.src = trigger.src;
+
       if (trigger.classList.contains('always-blurred')) {
-    popupImg.src = trigger.src; // ใช้รูปเดิม
-    popupImg.classList.add('blurred-in-modal');
-} else {
-    popupImg.src = trigger.src;
-    popupImg.classList.remove('blurred-in-modal');
-}
+        popupImg.classList.add('blurred-in-modal');
+      } else {
+        popupImg.classList.remove('blurred-in-modal');
+      }
+
       modal.classList.add('open');
-      document.body.style.overflow = 'hidden';
-      document.documentElement.style.overflow = 'hidden';
+      lockScroll();
     }
   });
 
   function closeModal() {
     modal.classList.remove('open');
-    // only release if modal was actually locking scroll
-    document.body.style.overflow = '';
-    document.documentElement.style.overflow = '';
+    unlockScroll();
   }
 
-  closeBtn && closeBtn.addEventListener('click', closeModal);
+  closeBtn?.addEventListener('click', closeModal);
+
   modal.addEventListener('click', e => {
-    if (e.target === modal) closeModal();
+    if (e.target === modal) {
+      closeModal();
+    }
   });
+
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeModal();
+    if (e.key === 'Escape') {
+      closeModal();
+    }
   });
 }
 
-/* ── PROFILE POPUP ───────────────────────────────────────── */
+/* PROFILE POPUP */
 function initProfile() {
   const btn = document.getElementById('profileBtn');
   if (!btn) return;
-  btn.addEventListener('click', () => btn.classList.toggle('open'));
+
+  btn.addEventListener('click', () => {
+    btn.classList.toggle('open');
+  });
+
   document.addEventListener('click', e => {
-    if (!btn.contains(e.target)) btn.classList.remove('open');
+    if (!btn.contains(e.target)) {
+      btn.classList.remove('open');
+    }
   });
 }
 
-/* ── INIT ────────────────────────────────────────────────── */
+/*INIT */
 document.addEventListener('DOMContentLoaded', () => {
-  document.body.style.overflow = 'hidden';
-  document.documentElement.style.overflow = 'hidden';
+  lockScroll();
   initWelcome();
   initModal();
   initProfile();
